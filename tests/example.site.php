@@ -18,6 +18,7 @@ return  [
             './style.css',
         ),
     ],
+
     [
         'type' => 'hero',
         'h' => 1,
@@ -52,7 +53,8 @@ return  [
                 'link' => '#',
             ]
         ],
-
+    ],
+    [
         [
             'type' => 'card',
             'title' => 'Sample Card 2 Title',
@@ -64,6 +66,34 @@ return  [
             'content' => substr($lorem, 0, 30),
         ]
     ],
+
+    [
+        'type' => 'html',
+        'content' => '
+        <section class="content subscribe">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h1>Subscribe</h1>
+                </div>
+                <div class="card-content">
+                    <form class="form" action="subscribe.php" method="post">
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                            <small id="emailHelp" class="form-text text-muted">We\'ll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group text-center">
+                            <a href="#" class="btn btn-primary">Subscribe</a>
+                        </div>
+                    </form>
+                </div> <!-- card-content -->
+            </div> <!-- card-body -->
+        </div> <!-- card -->
+        </section>
+        ',
+    ],
+
     [
         [
             'type' => 'listing',

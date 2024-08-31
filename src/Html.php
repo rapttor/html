@@ -264,7 +264,7 @@ class HTML
             ($onclick ? ' onclick="' . $onclick . '" ' : '') .
             ($name ? ' name="' . $name . '" ' : '') .
             ($href ? ' href="' . $href . '" ' : '') .
-            '>' . htmlspecialchars($content);
+            '>' . $content;
         $endtag = $endtag || !(in_array($tag, ['input', 'img']));
         if ($endtag) $html .= '</' . $tag . '>';
         $html .= PHP_EOL;
@@ -335,7 +335,7 @@ class HTML
             if (isset($column["type"])) {
                 //var_dump($title, $content, $items);
 
-                if (!in_array($type, explode(',', 'card,hero,footer'))) {
+                if (!in_array($type, explode(',', 'card,hero,footer,html'))) {
                     if ($title)
                         $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h, 'class' => 'text-' . $align]);
                     if ($content)
@@ -353,6 +353,9 @@ class HTML
                 }
 
                 switch ($type) {
+                    case 'html':
+                        $html .= $column['content'];
+                        break;
                     case 'hero':
                         $html .= '<div class="hero bkg-image' . $class . '" style="clear:both;height:80vh;background-image: url(' . $link . ')">';
                         $html .= '  <div class="container">';
