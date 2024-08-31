@@ -1,7 +1,7 @@
 {
   "name": "rapttor/html",
   "description": "General HTML class",
-  "version": "1.0.0", 
+  "version": "1.0.0",
   "keywords": [
     "php",
     "bootstrap",
@@ -45,15 +45,9 @@
   "autoload": {
     "psr-4": {
       "RapTToR\\Html\\": "src/"
-      
     },
     "files": [
       "src/Html.php"
-      
     ]
-  },
-  "replace": {
-    "rapttor/html": "self.version"
-    
   }
 }
