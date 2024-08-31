@@ -200,6 +200,53 @@ class HTML
         }
         return $html;
     }
+
+    public static function wrapTag($options, $defaults = array(
+        "content" => "",
+        "tag" => "p",
+        "class" => [],
+        "id" => false,
+        "name" => false,
+        "alt" => false,
+        "href" => false,
+        "onclick" => false,
+        "src" => false,
+        "align" => false,
+        "depth" => false,
+        "endtag" => true
+    ))
+    {
+        $parent = get_called_class();
+        extract(array_merge($defaults, $options));
+        // asume content is passed, but if not, use title or label
+        $content = isset($title) ? $title : $content;
+        $content = isset($label) ? $label : $content;
+
+        $class = (is_array($class) ? implode(" ", $class) : $class);
+        if ($align) $class .= ' text-' . $align;
+        if ($depth) $class .= ' depth-' . $depth;
+
+        $html = '<' . $tag . ' class="' . $class . '" ' .
+            ($id ? ' id="' . $id . '" ' : '') . ' ' .
+            ($src ? ' src="' . $src . '" ' : '') .
+            ($alt ? ' alt="' . $alt . '" ' : '') .
+            ($onclick ? ' onclick="' . $onclick . '" ' : '') .
+            ($name ? ' name="' . $name . '" ' : '') .
+            ($href ? ' href="' . $href . '" ' : '') .
+            '>' . htmlspecialchars($content);
+        $endtag = $endtag || !(in_array($tag, ['input', 'img']));
+        if ($endtag) $html .= '</' . $tag . '>';
+        $html .= PHP_EOL;
+        return $html;
+    }
+
+    public static function clear()
+    {
+        $parent = get_called_class();
+        $html = '<div class="clear clearfix block"></div>';
+        return $html;
+    }
+
     public static function generateHTML($column, $depth = 1)
     {
         $parent = get_called_class();
@@ -221,7 +268,11 @@ class HTML
             $aligntext = isset($column['aligntext']) ? $column['aligntext'] : $align;
             $link = isset($column['link']) ? $column['link'] : false;
             $title = isset($column['title']) ? $column['title'] : false;
+            $h = isset($column['h']) ? $column['h'] : $depth;
+
             $content = isset($column['content']) ? $column['content'] : false;
+            $content = isset($column['description']) ? $column['description'] : $content;
+
             $items = isset($column['items']) ? $column['items'] : false;
             $menu = isset($column['menu']) ? $column['menu'] : false;
 
@@ -233,11 +284,11 @@ class HTML
             if (isset($column["type"])) {
                 //var_dump($title, $content, $items);
 
-                if (!in_array($type, explode(',', 'card'))) {
+                if (!in_array($type, explode(',', 'card,hero,footer'))) {
                     if ($title)
-                        $html .= '<h' . $depth . ' class="text-' . $align . '">' . htmlspecialchars($title) . '</h' . $depth . '>';
+                        $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h, 'class' => 'text-' . $align]);
                     if ($content)
-                        $html .= '<p class="text-' . $aligntext . '">' . htmlspecialchars($content) . '</p>';
+                        $html .= $parent::wrapTag(['content' => $content, 'tag' => 'p', 'class' => 'text-' . $aligntext]);
                 }
 
                 if ($type == 'hero') {
@@ -252,32 +303,55 @@ class HTML
 
                 switch ($type) {
                     case 'hero':
+                        $html .= '<div class="hero bkg-image' . $class . '" style="clear:both;height:80vh;background-image: url(' . $link . ')">';
+                        $html .= '  <div class="container">';
+                        $html .= '    <div class="row">';
+                        $html .= '        <div class="col-12">';
+                        $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h]);
+                        $html .= '          <div class="row"><div class="col-md-6">';
+                        $html .= $parent::wrapTag(['content' => $content, 'tag' => 'p']);
+                        $html .= '          </div></div> <!-- col-md-6/row -->';
+                        $html .= '        </div> <!-- col-12 -->';
+                        $html .= '    </div> <!-- row -->';
+                        $html .= '  </div> <!-- container -->';
+                        $html .= '</div> <!-- hero -->';
+                        $html .= $parent::clear();
+                        break;
                     case 'image':
-                        $html .= '<img src="' . htmlspecialchars($link) . '" class="' . ($type !== 'hero' ? 'content-image' : 'hero') . ' w-100 img-fluid img-responsive col-12 ' . $class . '" alt="' . htmlspecialchars($title) . '">';
+                        $html .= $parent::wrapTag($column + ['src' => $link, 'tag' => 'img', 'alt' => htmlspecialchars($title), 'class' => $class . ' w-100 img-fluid img-responsive ' . ($type !== 'hero' ? 'content-image' : 'hero')]);
+                        // $html .= '<img src="' . htmlspecialchars($link) . '" class="' . ($type !== 'hero' ? 'content-image' : 'hero') . ' w-100 img-fluid img-responsive col-12 ' . $class . '" alt="' . htmlspecialchars($title) . '">';
                         break;
                     case 'card':
                         $html .= '<div class="card ' . $class . '">';
                         $html .= ' <div class="card-body">' . PHP_EOL;
-                        if ($title)
-                            $html .= '  <h' . $depth . ' class="card-title">' . htmlspecialchars($title) . '</h' . $depth . '>' . PHP_EOL;
-                        if ($content)
-                            $html .= '  <p class="card-text">' . htmlspecialchars($content) . '</p>' . PHP_EOL;
+                        if ($title) {
+                            $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h, 'class' => 'card-title']);
+                            // $html .= '  <h' . $h . ' class="card-title">' . htmlspecialchars($title) . '</h' . $h . '>' . PHP_EOL;
+                        }
+                        if ($content) {
+                            $html .= $parent::wrapTag(['content' => $content, 'tag' => 'p', 'class' => 'card-text']);
+
+                            // $html .= '  <p class="card-text">' . htmlspecialchars($content) . '</p>' . PHP_EOL;
+                        }
                         $html .= ' </div>' . PHP_EOL;
                         $html .= '</div>' . PHP_EOL;
                         break;
                     case 'button':
                     case 'btn':
                         $label = isset($column['label']) ? $column['label'] : false;
-                        $html .= '<a href="' . htmlspecialchars($link) . '" class="btn btn-primary ' . $class . '">' . htmlspecialchars($label) . '</a>' . PHP_EOL;
+                        $html .= $parent::wrapTag(['content' => $label, 'tag' => 'a', 'class' => 'btn ' . $class] + $column);
+                        // $html .= '<a href="' . htmlspecialchars($link) . '" class="btn btn-primary ' . $class . '">' . htmlspecialchars($label) . '</a>' . PHP_EOL;
                         break;
                     case 'link':
                         $label = isset($column['label']) ? $column['label'] : false;
-                        $html .= '<a href="' . htmlspecialchars($link) . '" class="' . $class . '">' . htmlspecialchars($label) . '</a>' . PHP_EOL;
+                        $html .= $parent::wrapTag(['content' => $label, 'tag' => 'a', 'class' => $class] + $column);
+                        //$html .= '<a href="' . htmlspecialchars($link) . '" class="' . $class . '">' . htmlspecialchars($label) . '</a>' . PHP_EOL;
                         break;
                     case 'listing':
                         $html .= '<ul class="' . $class . '">' . PHP_EOL;
                         foreach ($items as $subItem) {
-                            $html .= '<li class="">' . $parent::generateHTML($subItem, $depth + 1) . '</li>' . PHP_EOL;
+                            $html .= $parent::wrapTag(['content' => $parent::generateHTML($subItem, $depth + 1), 'tag' => 'li']) . PHP_EOL;
+                            // $html .= '<li class="">' .  . '</li>' . PHP_EOL;
                         }
                         $html .= '</ul>' . PHP_EOL;
                         $items = false;
@@ -318,7 +392,7 @@ class HTML
                     if ($addwrapper) $html .= ' </' . ($depth < 2 ? "section" : "div") . '>' . PHP_EOL;
                 }
                 $html .= '</div>' . PHP_EOL;
-                $html .= '<div class="clearfix"></div>' . PHP_EOL;
+                $html .= $parent::clear() . PHP_EOL;
             }
         } else if (is_string($column)) {
             $html .= $column;
