@@ -1,0 +1,45 @@
+.spacing,
+section {
+    margin-bottom: 100px;
+}
+
+.bkg-image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.red {
+    background: #456;
+    margin-bottom: 50px;
+    border-radius: 50px;
+    color: silver; 
+    padding: 30px;
+
+}
+
+nav img.img-logo {
+    height: 35px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+img.content-image {
+    border-radius: 25px;
+}
+
+.footer {
+    background: #234;
+    color: silver;
+    padding: 25px 0;
+
+    a {
+        color: white;
+    }
+
+}
+
+.hero {
+    padding-top: 20%;
+    margin-bottom: 50px;
+}

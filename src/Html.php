@@ -61,9 +61,20 @@ class HTML
 
         return '';
     }
-    public static function generateStart($column)
+
+
+    /**
+     * Generates the HTML start tag for a webpage.
+     *
+     * @param array $column An array containing the HTML general settings.
+     * @return string The generated HTML start tag.
+     */
+    public static function generateStart($options, $defaults = [
+        "column" => array(),
+    ])
     {
         $parent = get_called_class();
+        extract(array_merge($defaults, $options));
 
         $general = (isset($column["general"])) ? $column["general"] : array();
         extract($general);
@@ -91,7 +102,7 @@ class HTML
         $html .= '<!-- bootstap-->' . PHP_EOL;
         $html .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' . PHP_EOL;
         $html .= '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />' . PHP_EOL;
-
+        $html .= '<!-- user scripts-->' . PHP_EOL;
         if (isset($column["general"]["scripts"]))
             foreach ($column["general"]["scripts"] as $script) {
                 $extension = pathinfo($script, PATHINFO_EXTENSION);
@@ -112,6 +123,14 @@ class HTML
         $html .= '<body>' . PHP_EOL;
         return $html;
     }
+
+    /**
+     * Generates the HTML for a help page.
+     *
+     * The help page describes the structure of the input array.
+     *
+     * @return string The HTML for the help page.
+     */
     public static function generateHelp()
     {
         $html = '';
@@ -156,16 +175,19 @@ class HTML
     }
 
 
-
     /**
      * Generates the HTML for a menu based on the provided column data.
      *
      * @param array $column An array containing the menu data.
      * @return string The HTML for the menu.
      */
-    public static function generateMenu($column)
+    public static function generateMenu($options, $defaults = [
+        "column" => []
+    ])
     {
         $parent = get_called_class();
+        extract(array_merge($defaults, $options));
+
         $html = '';
         if (is_array($column)) {
             $title = isset($column["general"]["title"]) ? $column["general"]["title"] : 'APP';
@@ -203,6 +225,13 @@ class HTML
         return $html;
     }
 
+    /**
+     * Wraps the provided content in an HTML tag with optional attributes.
+     *
+     * @param array $options An array of options to override the default values.
+     * @param array $defaults An array of default values for the options.
+     * @return string The wrapped HTML content.
+     */
     public static function wrapTag($options, $defaults = array(
         "content" => "",
         "tag" => "p",
@@ -242,6 +271,11 @@ class HTML
         return $html;
     }
 
+    /**
+     * Generates an HTML div element with classes 'clear', 'clearfix', and 'block'.
+     *
+     * @return string The HTML div element as a string.
+     */
     public static function clear()
     {
         $parent = get_called_class();
@@ -249,15 +283,30 @@ class HTML
         return $html;
     }
 
-    public static function generateHTML($column, $depth = 1)
+    /**
+     * Generates HTML content based on the provided column data and depth.
+     * 
+     * This function is used to recursively generate HTML content for a given column data structure.
+     * It handles different types of columns, such as hero, image, card, button, link, and listing.
+     * 
+     * @param array $column The column data structure to generate HTML for.
+     * @param int $depth The current depth level of the recursive generation.
+     * 
+     * @return string The generated HTML content.
+     */
+    public static function generateHTML($options, $defaults = [
+        "column" => array(),
+        "depth" => 1
+    ])
     {
         $parent = get_called_class();
+        extract(array_merge($defaults, $options));
         $html = '';
         if ($depth == 1) {
-            $html .= $parent::generateStart($column);
+            $html .= $parent::generateStart(["column" => $column]);
 
             if (isset($column["general"]))
-                $html .= $parent::generateMenu($column);
+                $html .= $parent::generateMenu(["column" => $column]);
             $html .= '<div class="container">';
         }
         if (isset($column["general"])) {
@@ -352,7 +401,7 @@ class HTML
                     case 'listing':
                         $html .= '<ul class="' . $class . '">' . PHP_EOL;
                         foreach ($items as $subItem) {
-                            $html .= $parent::wrapTag(['content' => $parent::generateHTML($subItem, $depth + 1), 'tag' => 'li']) . PHP_EOL;
+                            $html .= $parent::wrapTag(['content' => $parent::generateHTML(["column" => $subItem, "depth" => $depth + 1]), 'tag' => 'li']) . PHP_EOL;
                             // $html .= '<li class="">' .  . '</li>' . PHP_EOL;
                         }
                         $html .= '</ul>' . PHP_EOL;
@@ -362,7 +411,7 @@ class HTML
                         break;
                 }
                 if ($items) {
-                    $html .= $parent::generateHTML($items, $depth + 1);
+                    $html .= $parent::generateHTML(['column' => $items, "depth" => $depth + 1]);
                 }
 
                 if ($type == 'hero') {
@@ -390,7 +439,7 @@ class HTML
                     if (is_array($c) && isset($c["type"]) && $c["type"] == "hero") $addwrapper = false;
 
                     if ($addwrapper) $html .= ' <' . ($depth < 2 ? "section" : "div") . ' class="col-md-' . $size . ' align-' . $align . '">' . PHP_EOL;
-                    $html .=  $parent::generateHTML($c, $depth + 1);
+                    $html .=  $parent::generateHTML(['column' => $c, "depth" => $depth + 1]);
                     if ($addwrapper) $html .= ' </' . ($depth < 2 ? "section" : "div") . '>' . PHP_EOL;
                 }
                 $html .= '</div>' . PHP_EOL;
