@@ -318,9 +318,7 @@ class HTML
             $align = isset($column['align']) ? $column['align'] : 'left';
             $aligntext = isset($column['aligntext']) ? $column['aligntext'] : $align;
             $link = isset($column['link']) ? $column['link'] : false;
-            $image = isset($column['image']) ? $column['image'] : false;
-            if (!$link && $image) $link = $image;
-
+            
             $title = isset($column['title']) ? $column['title'] : false;
             $h = isset($column['h']) ? $column['h'] : $depth;
 
@@ -339,8 +337,8 @@ class HTML
                 //var_dump($title, $content, $items);
 
                 if (!in_array($type, explode(',', 'card,hero,footer,html'))) {
-                    if ($image) // almost everything can have an image attached
-                        $html .= $parent::wrapTag(['content' => $column, 'tag' => 'img']);
+                    if ($link) // almost everything can have an image attached
+                        $html .= $parent::wrapTag(['src' => $link, 'tag' => 'img']);
                     if ($title) // almost everything can have a title
                         $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h, 'class' => 'text-' . $align]);
                     if ($content) // almost everything can have content
