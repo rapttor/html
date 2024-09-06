@@ -337,7 +337,7 @@ class HTML
                 //var_dump($title, $content, $items);
 
                 if (!in_array($type, explode(',', 'card,hero,footer,html'))) {
-                    if ($link) // almost everything can have an image attached
+                    if ($link && $type != 'image') // almost everything can have an image attached, except image itself.
                         $html .= $parent::wrapTag(['src' => $link, 'tag' => 'img']);
                     if ($title) // almost everything can have a title
                         $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h, 'class' => 'text-' . $align]);
