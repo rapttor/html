@@ -40,4 +40,14 @@ img.content-image {
   padding-top: 20%;
   margin-bottom: 50px;
 }
+
+.card-image {
+  display: block;
+  text-align: center;
+  clear: both;
+}
+.card-image .img-card {
+  margin: auto;
+  clear: both;
+}
 /*# sourceMappingURL=style.css.map */

@@ -318,6 +318,9 @@ class HTML
             $align = isset($column['align']) ? $column['align'] : 'left';
             $aligntext = isset($column['aligntext']) ? $column['aligntext'] : $align;
             $link = isset($column['link']) ? $column['link'] : false;
+            $image = isset($column['image']) ? $column['image'] : false;
+            if (!$link && $image) $link = $image;
+
             $title = isset($column['title']) ? $column['title'] : false;
             $h = isset($column['h']) ? $column['h'] : $depth;
 
@@ -336,9 +339,11 @@ class HTML
                 //var_dump($title, $content, $items);
 
                 if (!in_array($type, explode(',', 'card,hero,footer,html'))) {
-                    if ($title)
+                    if ($image) // almost everything can have an image attached
+                        $html .= $parent::wrapTag(['content' => $column, 'tag' => 'img']);
+                    if ($title) // almost everything can have a title
                         $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h, 'class' => 'text-' . $align]);
-                    if ($content)
+                    if ($content) // almost everything can have content
                         $html .= $parent::wrapTag(['content' => $content, 'tag' => 'p', 'class' => 'text-' . $aligntext]);
                 }
 
@@ -378,6 +383,10 @@ class HTML
                     case 'card':
                         $html .= '<div class="card ' . $class . '">';
                         $html .= ' <div class="card-body">' . PHP_EOL;
+                        if ($link)
+                            $html .=  '<div class="card-image">' .
+                                $parent::wrapTag(['src' => $link, 'tag' => 'img', 'class' => ' w-50 text-center  img-responsive img-card'])
+                                . '</div>';
                         if ($title) {
                             $html .= $parent::wrapTag(['content' => $title, 'tag' => 'h' . $h, 'class' => 'card-title']);
                             // $html .= '  <h' . $h . ' class="card-title">' . htmlspecialchars($title) . '</h' . $h . '>' . PHP_EOL;

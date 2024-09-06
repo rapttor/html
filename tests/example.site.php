@@ -230,7 +230,9 @@ return  [
                 [
                     [
                         'type' => 'card',
-                        'title' => 'Nested Card Title',
+                        'link' => 'https://picsum.photos/200/400',
+                        'image' => 'https://picsum.photos/200/400',
+                        'title' => 'Nested Card with Image Title',
                         'content' => substr($lorem, 50, 50),
                     ],
                     [
