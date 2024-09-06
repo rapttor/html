@@ -40,7 +40,8 @@
     }
   ],
   "require": {
-    "php": ">=4.5.0"
+    "php": ">=4.5.0",
+    "rapttor/html": "dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -49,5 +50,7 @@
     "files": [
       "src/Html.php"
     ]
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
