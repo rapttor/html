@@ -10,7 +10,11 @@
 
     composer require rapttor/html
 
-or
+or, if you have problems with loading dev-master, use: 
+
+    composer require rapttor/html:dev-master 
+
+or modify your composer.json in order to specify tag
 
       "require": {
         "rapttor/html": "dev-master"
