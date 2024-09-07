@@ -318,7 +318,7 @@ class HTML
             $align = isset($column['align']) ? $column['align'] : 'left';
             $aligntext = isset($column['aligntext']) ? $column['aligntext'] : $align;
             $link = isset($column['link']) ? $column['link'] : false;
-            
+
             $title = isset($column['title']) ? $column['title'] : false;
             $h = isset($column['h']) ? $column['h'] : $depth;
 
@@ -448,7 +448,7 @@ class HTML
                     $addwrapper = true;
                     if (is_array($c) && isset($c["type"]) && $c["type"] == "hero") $addwrapper = false;
 
-                    if ($addwrapper) $html .= ' <' . ($depth < 2 ? "section" : "div") . ' class="col-md-' . $size . ' align-' . $align . '">' . PHP_EOL;
+                    if ($addwrapper) $html .= ' <' . ($depth < 2 ? "section" : "div") . ' class="col-md-' . $size . ' align-' . $align . ' ' . $class . '">' . PHP_EOL;
                     $html .=  $parent::generateHTML(['column' => $c, "depth" => $depth + 1]);
                     if ($addwrapper) $html .= ' </' . ($depth < 2 ? "section" : "div") . '>' . PHP_EOL;
                 }
