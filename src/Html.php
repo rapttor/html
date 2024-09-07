@@ -440,15 +440,17 @@ class HTML
                 $sizeclass = 'col-12';
                 if (!isset($column["size"])) {
                     $countofitems = count($column);
-                    if ($countofitems > 1)
+                    if ($countofitems == 2) // 2
                         $sizeclass = 'col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6';
-                    if ($countofitems > 3)
+                    if ($countofitems == 3)
                         $sizeclass = 'col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4';
-                    if ($countofitems > 6)
-                        $sizeclass = 'col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3';
+                    if ($countofitems == 4)
+                        $sizeclass = 'col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3';
+                    if ($countofitems > 4)
+                        $sizeclass = 'col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2';
                     if ($countofitems > 9)
                         $sizeclass = 'col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2';
-                    if ($countofitems > 12) $sizeclass = 'col-12 col-sm-3 col-md-2 col-lg-1 col-xl-1';
+                    if ($countofitems > 11) $sizeclass = 'col-12 col-sm-3 col-md-2 col-lg-1 col-xl-1';
                 }
 
                 $html .= '<div class="row  ' . $class . ' align-' . $align . ' depth-' . $depth . '">' . PHP_EOL;
