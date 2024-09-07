@@ -434,8 +434,31 @@ class HTML
             } else { // list of items
                 $havesize = false;
                 $rest = 12;
-                $size = 12 / (count($column) > 0 ? count($column) : 1);
-                $html .= '<div class="row ' . $class . ' align-' . $align . ' depth-' . $depth . '">' . PHP_EOL;
+                $size = round(12 / (count($column) > 0 ? count($column) : 1));
+                if ($size == 0) $size = 1;
+                $sizeclass = '';
+                if (!isset($column["size"]))
+                    switch (count($column)) {
+                        case 1:
+                            $sizeclass = 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
+                            break;
+                        case 2:
+                            $sizeclass = 'col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6';
+                            break;
+                        case 3:
+                            $sizeclass = 'col-4 col-sm-6 col-md-6 col-lg-4 col-xl-3';
+                            break;
+                        case 4:
+                            $sizeclass = 'col-3 col-sm-6 col-md-4 col-lg-3 col-xl-2';
+                            break;
+                        case 6:
+                            $sizeclass = 'col-2 col-sm-4 col-md-6 col-lg-3 col-xl-2';
+                            break;
+                        default: // 12 and more
+                            $sizeclass = 'col-4 col-sm-3 col-md-2 col-lg-1 col-xl-1';
+                            break;
+                    }
+                $html .= '<div class="row  ' . $class . ' align-' . $align . ' depth-' . $depth . '">' . PHP_EOL;
                 foreach ($column as $c) {
                     if (is_array($c) && isset($c["size"])) {
                         $havesize = true;
@@ -448,7 +471,7 @@ class HTML
                     $addwrapper = true;
                     if (is_array($c) && isset($c["type"]) && $c["type"] == "hero") $addwrapper = false;
 
-                    if ($addwrapper) $html .= ' <' . ($depth < 2 ? "section" : "div") . ' class="col-md-' . $size . ' align-' . $align . ' ' . $class . '">' . PHP_EOL;
+                    if ($addwrapper) $html .= ' <' . ($depth < 2 ? "section" : "div") . ' class="' . ($depth > 1 ? $sizeclass : '') . ' align-' . $align . ' ' . $class . '">' . PHP_EOL;
                     $html .=  $parent::generateHTML(['column' => $c, "depth" => $depth + 1]);
                     if ($addwrapper) $html .= ' </' . ($depth < 2 ? "section" : "div") . '>' . PHP_EOL;
                 }
