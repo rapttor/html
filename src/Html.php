@@ -437,7 +437,7 @@ class HTML
                 $size = round(12 / (count($column) > 0 ? count($column) : 1));
                 if ($size == 0) $size = 1;
 
-                $sizeclass = 'col-12';
+                $sizeclass = 'col-' . $size;
                 if (!isset($column["size"])) {
                     $countofitems = count($column);
                     if ($countofitems == 2) // 2
