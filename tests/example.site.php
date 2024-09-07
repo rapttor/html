@@ -28,30 +28,81 @@ return  [
         'description' => substr($lorem, 0, 100),
     ],
     [
-        'type' => 'listing 20 items',
-        'items' => [
-            'item 1',
-            'item 2',
-            'item 3',
-            'item 4',
-            'item 5',
-            'item 6',
-            'item 7',
-            'item 8',
-            'item 9',
-            'item 10',
-            'item 11',
-            'item 12',
-            'item 13',
-            'item 14',
-            'item 15',
-            'item 16',
-            'item 17',
-            'item 18',
-            'item 19',
-            'item 20',
-        ]
+        'type' => 'content',
+        'title' => 'content 20 items',
+        'items' => explode(',', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20'),
     ],
+    [
+        'type' => 'content',
+        'title' => 'content 15 items',
+        'items' => explode(',', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15'),
+    ],
+
+    [
+        'type' => 'content',
+        'title' => 'content 12 items',
+        'items' => explode(',', '1,2,3,4,5,6,7,8,9,10,11,12'),
+    ],
+
+    [
+        'type' => 'content',
+        'title' => 'content 11 items',
+        'items' => explode(',', '1,2,3,4,5,6,7,8,9,10,11'),
+    ],
+    [
+        'type' => 'content',
+        'title' => 'content 10 items',
+        'items' => explode(',', '1,2,3,4,5,6,7,8,9,10'),
+    ],
+
+    [
+        'type' => 'content',
+        'title' => 'content 9 items',
+        'items' => explode(',', '1,2,3,4,5,6,7,8,9'),
+    ],
+
+    [
+        'type' => 'content',
+        'title' => 'content 8 items',
+        'items' => explode(',', '1,2,3,4,5,6,7,8'),
+    ],
+
+    [
+        'type' => 'content',
+        'title' => 'content 7 items',
+        'items' => explode(',', '1,2,3,4,5,6,7'),
+    ],
+    [
+        'type' => 'content',
+        'title' => 'content 6 items',
+        'items' => explode(',', '1,2,3,4,5,6'),
+    ],
+    [
+        'type' => 'content',
+        'title' => 'content 5 items',
+        'items' => explode(',', '1,2,3,4,5'),
+    ],
+    [
+        'type' => 'content',
+        'title' => 'content 4 items',
+        'items' => explode(',', '1,2,3,4'),
+    ],
+    [
+        'type' => 'content',
+        'title' => 'content 3 items',
+        'items' => explode(',', '1,2,3'),
+    ],
+    [
+        'type' => 'content',
+        'title' => 'content 2 items',
+        'items' => explode(',', '1,2'),
+    ],
+    [
+        'type' => 'content',
+        'title' => 'content 1 items',
+        'items' => explode(',', '1'),
+    ],
+
     [
         'type' => 'card',
         'menu' => array("title" => "Download"),
