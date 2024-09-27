@@ -303,9 +303,16 @@ class HTML
         extract(array_merge($defaults, $options));
         $html = '';
         if ($depth == 1) {
-            $html .= $parent::generateStart(["column" => $column]);
+            if (
+                isset($column["general"]) &&
+                (!isset($column["general"]["head"]) ||  isset($column["general"]["head"]))
+            )
+                $html .= $parent::generateStart(["column" => $column]);
 
-            if (isset($column["general"]))
+            if (
+                isset($column["general"]) &&
+                (!isset($column["general"]["menu"]) || isset($column["general"]["menu"]))
+            )
                 $html .= $parent::generateMenu(["column" => $column]);
             $html .= '<div class="container">';
         }
