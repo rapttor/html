@@ -305,13 +305,13 @@ class HTML
         if ($depth == 1) {
             if (
                 isset($column["general"]) &&
-                (!isset($column["general"]["head"]) ||  isset($column["general"]["head"]))
+                (!isset($column["general"]["head"]) ||  $column["general"]["head"])
             )
                 $html .= $parent::generateStart(["column" => $column]);
 
             if (
                 isset($column["general"]) &&
-                (!isset($column["general"]["menu"]) || isset($column["general"]["menu"]))
+                (!isset($column["general"]["menu"]) || $column["general"]["menu"])
             )
                 $html .= $parent::generateMenu(["column" => $column]);
             $html .= '<div class="container">';
